@@ -13,5 +13,9 @@ app.use('/', require('./routes/urlGenerator'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+app.use(function(req, res, next) {
+    res.status(404).render('404');
+});
+
 const PORT = process.env.PORT || 4111;
 app.listen(PORT, () => console.log("Server started at port: " + PORT));

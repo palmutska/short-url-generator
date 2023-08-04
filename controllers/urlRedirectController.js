@@ -24,6 +24,9 @@ const getUrlRedirect = async (req, res) => {
       return res.render("404", {});
     }
 
+    //Increment clickCount
+    await urlService.addClick(shortUrl);
+
     // Redirect the user to the original URL
     res.redirect(urlToRedirect);
   } catch (err) {

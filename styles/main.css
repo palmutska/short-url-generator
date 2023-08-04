@@ -1,0 +1,192 @@
+body {
+  background-image: linear-gradient(to bottom, #002b5b, #5b57a7);
+  font-family: "Alata", sans-serif;
+  margin: 0;
+}
+
+header,
+footer {
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.url-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 20px;
+  width: 80%;
+  max-width: 400px;
+}
+
+.url-form input {
+  padding: 10px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 20px;
+  background-color: #6d67e4;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Transição de 0.3 segundos na cor de fundo */
+}
+
+button:hover {
+  background-color: #847ce0; /* Nova cor de fundo durante o hover */
+}
+
+.titles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  letter-spacing: 2px;
+}
+
+.no-break {
+  display: inline-block;
+}
+
+
+h1 {
+  color: #f9f5eb;
+  font-size: 2rem;
+  margin: 0;
+}
+
+@media (max-width: 560px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+}
+
+h2 {
+  color: #e4dccf;
+  font-size: 1.5rem;
+  margin-top: 15px;
+}
+
+.waviy {
+  position: relative;
+}
+
+.sucess {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 10px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  
+}
+
+hr.dashed {
+  border: none;
+  border-top: 4px dotted #bbb;
+  width: 40%;
+}
+
+#shortUrl {
+  margin-bottom: 15px;
+  margin-right: 15px;
+  color: white;
+  font-size: 20px;
+}
+
+#shortUrl:hover {
+  color: lightgray;
+
+}
+
+.gg-copy {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: scale(var(--ggs, 1));
+  width: 14px;
+  height: 18px;
+  border: 2px solid;
+  margin-left: -5px;
+  margin-top: -4px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+#loading {
+  color: white;
+  font-size: 22px;
+  margin-top: 5px
+}
+
+.gg-copy:hover {
+  color: lightgray;
+}
+
+.gg-copy::after,
+.gg-copy::before {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+}
+.gg-copy::before {
+  background: linear-gradient(to left, currentColor 5px, transparent 0)
+      no-repeat right top/5px 2px,
+    linear-gradient(to left, currentColor 5px, transparent 0) no-repeat left
+      bottom/ 2px 5px;
+  box-shadow: inset -4px -4px 0 -2px;
+  bottom: -6px;
+  right: -6px;
+  width: 14px;
+  height: 18px;
+}
+
+.gg-copy::after {
+  width: 6px;
+  height: 2px;
+  background: currentColor;
+  left: 2px;
+  top: 2px;
+  box-shadow: 0 4px 0, 0 8px 0;
+}
+
+.link-icon {
+  display: flex;
+  align-items: baseline;
+  color: white;
+}
+
+.waviy span {
+  position: relative;
+  display: inline-block;
+  font-size: 50px;
+  color: #fff;
+  animation: flip 2s infinite;
+  animation-delay: calc(0.5s * var(--i));
+}
+
+@keyframes flip {
+  0%,
+  80% {
+    transform: rotateY(360deg);
+  }
+}

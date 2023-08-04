@@ -9,6 +9,7 @@ app.use(express.static(__dirname + '/styles'));
 
 app.use('/', require('./routes/urlRedirect'));
 app.use('/', require('./routes/urlGenerator'));
+app.use('/', require('./routes/urlInfo'));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

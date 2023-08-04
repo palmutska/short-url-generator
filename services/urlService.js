@@ -81,10 +81,41 @@ class UrlService {
       const filter = { shortUrl };
       const update = { $inc: { clickCount: 1 } };
 
-      const url = await Url.findOneAndUpdate(filter, update, { new: true }).exec();
+      const url = await Url.findOneAndUpdate(filter, update, {
+        new: true,
+      }).exec();
 
       if (!url) {
         throw new Error("URL not found");
+      }
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  }
+
+  /**
+   * Retrieves the details of a URL associated with the provided short URL from the database.
+   * @param {string} shortUrl - The shortened URL.
+   * @returns {Promise<object|null>} A promise that resolves to an object containing the URL details if it exists; null otherwise.
+   * @throws {Error} If shortUrl is not provided.
+   * @throws {Error} If there is any error in execution.
+   */
+  static async getUrlDetails(shortUrl) {
+    if (!shortUrl) throw new Error("Missing parameter");
+    try {
+      const filter = { shortUrl };
+      const url = await Url.findOne(filter).exec();
+
+      if (url) {
+        return {
+          oldUrl: url.oldUrl,
+          shortUrl: url.shortUrl,
+          clickCount: url.clickCount,
+          createdAt: url.createdAt,
+        };
+      } else {
+        return null;
       }
     } catch (err) {
       console.error(err);

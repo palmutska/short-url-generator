@@ -3,8 +3,9 @@
  * @module ShortUrlGenerator
  */
 
-const crypto = require('crypto');
+const crypto = require("crypto");
 const urlService = require("../services/urlService");
+const url = require("url");
 
 /**
  * Generates a short URL key from the given URL using SHA-256 hashing.
@@ -12,7 +13,7 @@ const urlService = require("../services/urlService");
  * @returns {string} - The short URL key.
  */
 const generateShortUrl = (url) => {
-  const hash = crypto.createHash('sha256').update(url).digest('hex');
+  const hash = crypto.createHash("sha256").update(url).digest("hex");
   return hash.substring(0, 6);
 };
 
@@ -23,12 +24,14 @@ const generateShortUrl = (url) => {
  */
 function isValidURL(url) {
   const urlPattern = new RegExp(
-    '^(https?:\\/\\/)?' + // protocol
-    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-    '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-    '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-    '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // fragment locator
   return urlPattern.test(url);
 }
 
@@ -51,19 +54,27 @@ const postSubmitUrl = async (req, res) => {
     if (!req.body.url) {
       return res.status(400).json({ error: "Missing URL parameter" });
     }
-    if(!isValidURL(req.body.url)) {
+
+    if (!isValidURL(req.body.url)) {
       return res.status(400).json({ error: "URL is not valid" });
     }
 
+    const parsedUrl = new URL(req.body.url);
+    const protocol = parsedUrl.protocol;
+
     const key = generateShortUrl(req.body.url);
-    const newUrl = req.get('host') + "/" + key;
+    const newUrl = protocol + "//" + req.get("host") + "/" + key;
 
     await urlService.addUrl(req.body.url, newUrl);
 
-    res.status(200).json({ shortUrl: newUrl, message: "URL generated successfully" });
+    res
+      .status(200)
+      .json({ shortUrl: newUrl, message: "URL generated successfully" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Failed to generate URL", details: err.message });
+    res
+      .status(500)
+      .json({ error: "Failed to generate URL", details: err.message });
   }
 };
 

@@ -52,7 +52,7 @@
           URL generated <span style="color: lightgreen">successfully</span>!
         </h2>
         <div class="link-icon">
-          <a id="shortUrl" target="_blank"></a>
+          <a id="shortUrl"></a>
           <i title="Copy" class="gg-copy copy"></i>
         </div>
         <button type="submit" onclick="anotherUrl()">
@@ -88,6 +88,7 @@
               console.log(data.shortUrl);
               $("#form").fadeOut(300, function () {
                 $("#shortUrl").text(data.shortUrl);
+                $("#shortUrl").attr("href", "");
                 $("#shortUrl").attr("href", data.shortUrl);
                 $("#sucess").fadeIn(300);
               });

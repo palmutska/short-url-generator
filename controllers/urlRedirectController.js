@@ -14,7 +14,7 @@ const urlService = require("../services/urlService");
 const getUrlRedirect = async (req, res) => {
   try {
     // Build the short URL from the request's host and the URL key parameter
-    const shortUrl = req.get("host") + "/" + req.params.key;
+    const shortUrl = "https://" + req.get("host") + "/" + req.params.key;
 
     // Retrieve the original URL associated with the short URL key
     const urlToRedirect = await urlService.getOldUrlByShortUrl(shortUrl);

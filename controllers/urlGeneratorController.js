@@ -56,7 +56,7 @@ const postSubmitUrl = async (req, res) => {
     }
 
     const key = generateShortUrl(req.body.url);
-    const newUrl = "www." + req.get('host') + "/" + key;
+    const newUrl = req.get('host') + "/" + key;
 
     await urlService.addUrl(req.body.url, newUrl);
 

@@ -59,11 +59,8 @@ const postSubmitUrl = async (req, res) => {
       return res.status(400).json({ error: "URL is not valid" });
     }
 
-    const parsedUrl = new URL(req.body.url);
-    const protocol = parsedUrl.protocol;
-
     const key = generateShortUrl(req.body.url);
-    const newUrl = protocol + "//" + req.get("host") + "/" + key;
+    const newUrl = "https://" + req.get("host") + "/" + key;
 
     await urlService.addUrl(req.body.url, newUrl);
 

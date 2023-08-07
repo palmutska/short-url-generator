@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="normalize.css" />
+    <link rel="stylesheet" href="main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alata&display=swap"
+      rel="stylesheet"
+    />
+    <title>Short URL Generator</title>
+  </head>
+  <body>
+    <header></header>
+    <main>
+      <div class="titles waviy">
+        <h1>
+          Shorten your
+          <span style="--i: 1; margin-right: -10px"
+            ><span class="no-break">U</span></span
+          >
+          <span style="--i: 2; margin-right: -10px"
+            ><span class="no-break">R</span></span
+          >
+          <span style="--i: 3"><span class="no-break">L</span></span>
+          now!
+        </h1>
+
+        <h2>&#10024; Fast and Simple &#10024;</h2>
+      </div>
+      <hr class="dashed" />
+      <form class="url-form" id="form">
+        <input
+          type="url"
+          id="inputUrl"
+          placeholder="Enter your URL here"
+          required
+        />
+        <button type="submit">Shorten URL</button>
+      </form>
+      <div id="loading" style="display: none">Loading...</div>
+      <div class="sucess" id="sucess">
+        <h2>
+          URL generated <span style="color: lightgreen">successfully</span>!
+        </h2>
+        <div class="link-icon">
+          <a id="shortUrl"></a>
+          <i title="Copy" class="gg-copy copy"></i>
+        </div>
+        <button type="submit" onclick="anotherUrl()">
+          Shorten another URL
+        </button>
+      </div>
+    </main>
+    <footer></footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script>
+      $("#sucess").hide();
+
+      $(document).ready(function () {
+        $(".url-form").on("submit", async function (event) {
+          event.preventDefault();
+          const inputUrl = $("#inputUrl").val();
+
+          let loadingTimeout = setTimeout(() => $("#loading").fadeIn(300), 500);
+
+          try {
+            const response = await $.ajax("/", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              data: { url: inputUrl },
+            });
+
+            const data = response;
+
+            if (data.shortUrl) {
+              console.log(data.shortUrl);
+              $("#form").fadeOut(300, function () {
+                $("#shortUrl").text(data.shortUrl);
+                $("#shortUrl").attr("href", "");
+                $("#shortUrl").attr("href", data.shortUrl);
+                $("#sucess").fadeIn(300);
+              });
+            } else {
+              console.error("Error:", data.error);
+            }
+          } catch (error) {
+            console.error("Error:", error.message);
+          } finally {
+            clearTimeout(loadingTimeout);
+            $("#loading").hide();
+          }
+        });
+      });
+
+      $(document).on("click", ".copy", function () {
+        var notyf = new Notyf({
+          duration: 1000,
+          dismissible: true,
+        });
+
+        const urlToCopy = $("#shortUrl").text();
+        const tempInput = $("<input>");
+
+        $("body").append(tempInput);
+
+        tempInput.val(urlToCopy).select();
+        document.execCommand("copy");
+        tempInput.remove();
+
+        notyf.success("URL copied!");
+
+        $(".copy").prop("disabled", true);
+        setTimeout(function () {
+          $(".copy").prop("disabled", false);
+        }, 1000);
+      });
+
+      function anotherUrl() {
+        $("#sucess").fadeOut(300, function () {
+          $("#form").fadeIn(300);
+        });
+      }
+    </script>
+  </body>
+</html>
